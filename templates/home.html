@@ -58,7 +58,7 @@
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom" id="navbar">
     <div class="container">
       <a class="navbar-brand" href="#">Alien Atlas</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,9 +84,82 @@
   <div class="landing-container">
     {% if session %}
         <h1>Welcome back, {{session.userinfo.nickname}}</h1>
-        <p>It looks like you are just a few</p>
-        <p><a href="/logout">Logout</a></p>
-        <div><pre>{{pretty}}</pre></div>
+    <script> document.getElementById("navbar").style.display = 'none';</script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            background-color: #000000;
+            font-family: Arial, sans-serif;
+        }
+
+        .center-div {
+            width: 50vw;
+            height: 80vh;
+            background-color: rgb(102, 71, 255);
+            border-radius: 15px;
+            padding: 5px;
+            box-sizing: border-box;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .center-div {
+                height: 40vh;
+                width: 80vw;
+            }
+        }
+
+        /* Added styles for the iframe to ensure it fills its container */
+        .webchatIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+        <div
+          class="center-div relative h-full w-full overflow-clip rounded-md border border-zinc-200 bg-white p-2 px-0 py-0"
+        >
+          <iframe
+            style="border: none;"
+            srcdoc="<body><script src='https://cdn.botpress.cloud/webchat/v1/inject.js'></script>
+            <script>
+              window.botpressWebChat.init({
+                  'composerPlaceholder': 'Astro the Alien',
+                  'botConversationDescription': 'Chat with Astro',
+                  'botName': 'Astro',
+                  'botId': '42557aab-846c-4bce-89c2-b6c3481bba0e',
+                  'hostUrl': 'https://cdn.botpress.cloud/webchat/v1',
+                  'messagingUrl': 'https://messaging.botpress.cloud',
+                  'clientId': '42557aab-846c-4bce-89c2-b6c3481bba0e',
+                  'enableConversationDeletion': true,
+                  'showPoweredBy': true,
+                  'className': 'webchatIframe',
+                  'containerWidth': '100%25',
+                  'layoutWidth': '100%25',
+                  'hideWidget': true,
+                  'showCloseButton': false,
+                  'disableAnimations': true,
+                  'closeOnEscape': false,
+                  'showConversationsButton': false,
+                  'enableTranscriptDownload': false,
+                  'stylesheet':'https://webchat-styler-css.botpress.app/prod/code/3fcd3e4e-d5bc-4bf5-8699-14b621b3ada2/v31782/style.css'
+
+              });
+            window.botpressWebChat.onEvent(function () { window.botpressWebChat.sendEvent({ type: 'show' }) }, ['LIFECYCLE.LOADED']);
+            </script></body>"
+            width="100%"
+            height="100%"
+          ></iframe>
+        </div>
     {% else %}
         <img src="static/landing_not_authenticated.png" alt="Rocket ship" width="100%" height="auto">
     {% endif %}
